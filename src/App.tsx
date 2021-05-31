@@ -1,24 +1,26 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, { useState } from 'react';
 import './App.css';
+import Letter from './components/letter';
+/* DATABASE */
+import db from './resource/db';
 
 function App() {
+  const [isOpenAnyLetter, setIsOpenAnyLetter] = useState(false);
+  function openLetter() {
+    setIsOpenAnyLetter(!isOpenAnyLetter);
+  }
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <div className="wrap">
+        {
+          db.map((value) => {
+            return (
+              <Letter name={value.name} title={value.title} write={value.write} img={value.img}/>
+            )
+          })
+        }
+      </div>
     </div>
   );
 }
