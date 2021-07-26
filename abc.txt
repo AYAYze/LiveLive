@@ -1,0 +1,37 @@
+{
+  "letter": {
+    "author": "JY",
+    "title": "THUMB & IMAGES & TEXT TEST (RE)",
+    "thumb": "https://pbs.twimg.com/media/ErcXu2bU0AIHVNC.jpg",
+    "images": [
+      {
+        "url": "https://pbs.twimg.com/media/ErcXu2bU0AIHVNC.jpg",
+        "startX": 100,
+        "startY": 100,
+        "width": 200,
+        "height": 200
+      },
+      {
+        "url": "https://i.imgur.com/douh7U1.gif",
+        "startX": 300,
+        "startY": 300,
+        "width": 200,
+        "height": 200
+      }
+    ],
+    "writes": [
+      {
+        "startX": 400,
+        "startY": 600,
+        "font": "",
+        "text": "안녕하세요~~"
+      },
+      {
+        "startX": 400,
+        "startY": 680,
+        "font": "italic small-caps bold 40px/2 cursive",
+        "text": "SHIBAL LOMDULA"
+      }
+    ]
+  }
+}

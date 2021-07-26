@@ -1,0 +1,43 @@
+.letter {
+    position:relative;
+    width: 50vw;
+    height:250px;
+    background-color:rgb(206, 153, 153);
+    color:white;
+    font-size: 25px;    
+    user-select: none;
+    cursor: pointer;
+    margin-top:25px;
+    margin-bottom:25px;
+    overflow:hidden;
+}
+
+.text-wrap {
+    cursor: pointer;
+    backdrop-filter: blur(1px);
+    display: flex;
+    height:250px;
+    text-align: center;
+    box-sizing: border-box;
+    justify-content: center;
+    align-items: center;
+}
+
+.content {
+    line-height:250px;
+}
+.author {
+    position:absolute;
+    bottom:28px;
+    right:28px;
+    color:rgba(255, 255, 255, 0.45);
+    font-size:15px;
+}
+
+.borderBox {
+    position:absolute;
+    width: 96%;
+    height: 85%;
+    border:1px solid white;
+    border-radius:10px;
+}

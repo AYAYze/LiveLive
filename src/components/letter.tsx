@@ -1,35 +1,132 @@
-import React, { useState } from 'react';
+import React from 'react';
 import ReactDOM from 'react-dom';
-import Post from './post';
+import { Link, useParams } from 'react-router-dom';
 import './Letter.css';
-import letterInfo from '../resource/letterInfo';
+import LetterInfo from '../types/LetterInfo';
+import { gql, useQuery } from '@apollo/client';
+import WriteInfo from '../types/WriteInfo';
+import ImageInfo from '../types/ImageInfo';
 
-function Letter(prop : letterInfo) {
-    const [isPostOpen, setIsPostOpen] = useState(false);
 
-    let letterStyle = {
-        backgroundImage: `url(${prop.img[0]})`,
+const LETTER = gql`
+  query Letter($id: Float!) {
+    Letter(id: $id) {
+      title,
+      thumb,
+      author,
+      writes {
+          text,
+          startX,
+          startY,
+          font
+      }
+
+      images {
+          url,
+          startX,
+          startY,
+          width,
+          height,
+      }
+      
+    }
+  }
+`
+
+
+
+
+interface ParamType {
+    id: string
+  }
+
+function Post(){
+    const { id } = useParams<ParamType>();
+
+    const { loading, error, data} = useQuery(LETTER, {
+        variables: {
+            id:parseInt(id)
+        }
+    });
+
+    const letter : LetterInfo = data?.Letter ?? ({
+        images:[],
+        writes:[]
+    });
+
+    let titleStyle = {
+        backgroundImage: `url(${letter.thumb})`,
         backgroundRepeat: `no-repeat`,
         backgroundSize: `cover`,
         backgroundPosition: `center center`,
-    }
-
-    function openPost(){
-        setIsPostOpen(!isPostOpen);
+        backgroundAttachment: `fixed`,
     }
     return (
-        <div className="letter" style={letterStyle} onClick={openPost}>
-            <div className="text-wrap">
-                <div className="content">
-                    {prop.title}
+        <div className="post">
+            <Link to={`/`}>
+                <div className="closePost">
+                    {`X`}
                 </div>
-                <div className="author">
-                    Author -{prop.name}-
+            </Link>
+            <div className="content">
+                <div className="title" style={titleStyle}>
+                    <div className="titleBack">
+                        {letter.title}
+                    </div>
+                </div>
+                <div className="write">
+                    {
+                        letter.writes.map(value=>{
+                            return (
+                                <Write writeInfo={value}/>
+                            )
+                        })
+
+                    }
+                    {
+                        letter.images.map(value=>{
+                            return (
+                                <Image imageInfo={value}/>
+                            )
+                        })
+                    }
                 </div>
             </div>
-            {isPostOpen ? <Post name={prop.name} title={prop.title} write={prop.write} img={prop.img} toggle={openPost} /> : null}
         </div>
     )
-}   
+}
 
-export default Letter;
+function Write({writeInfo} : {writeInfo : WriteInfo}) {
+    const style = {
+        position: "absolute" as "absolute",
+        left: `${writeInfo.startX}px`,
+        top: `${writeInfo.startY}px`,
+        font: writeInfo.font
+    }
+    return (
+        <div style={style}>
+            {writeInfo.text}
+        </div>
+    )
+}
+
+function Image({imageInfo} : {imageInfo : ImageInfo}) {
+    const style = {
+        position: "absolute" as "absolute",
+        left: `${imageInfo.startX}px`,
+        top: `${imageInfo.startY}px`,
+        width: `${imageInfo.width}px`,
+        height: `${imageInfo.height}px`,
+    }
+    const imgStyle = {
+        maxWidth: "100%",
+        maxHeight: "100%"
+    }
+    return (
+        <div style={style}>
+            <img style={imgStyle} src={imageInfo.url}></img>
+        </div>
+    )
+}
+
+export default Post;

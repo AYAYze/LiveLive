@@ -1,31 +1,56 @@
-.letter {
-    position:relative;
-    width: 50vw;
-    height:250px;
-    background-color:rgb(157, 176, 182);
+.post {
+    position:fixed;
+    top:50%;
+    left:50%;
+    margin-top:-45vh;
+    margin-left:-500px;
+    width: 1000px;
+    height: 90vh;
+    background-color:rgb(44, 44, 44);
+    z-index:1;
     color:white;
-    font-size: 20px;    
-    user-select: none;
-    cursor: pointer;
+    border-radius:20px;
+    user-select:text;
+    overflow:auto;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+    font-size: 30px;
 }
-
-.text-wrap {
-    cursor: pointer;
-    backdrop-filter: blur(3px);
-    display: flex;
-    height:250px;
-    text-align: center;
-    box-sizing: border-box;
+.post::-webkit-scrollbar{
+    display:none;
+}
+.closePost {
+    position:absolute;
+    top:10px;
+    right:15px;
+    z-index:3;
+    cursor:pointer;
+    font-size:30px;
+    text-decoration: none;
+    color:white;
 }
 
 .content {
-    line-height:250px;
-}
-.author {
-    position:absolute;
-    bottom:5px;
-    right:5px;
-    color:rgba(255, 255, 255, 0.45);
-    font-size:15px;
+    display: flex;
+    flex-direction: column;
+    width:100%;
+    height:100%;
 }
 
+.title {
+    height: 400px;
+    color:white;
+    line-height:400px;
+    text-align:center;
+    user-select:none;
+}
+
+.titleBack {
+    backdrop-filter: blur(10px);
+}
+
+.write {
+    position: relative;
+    padding: 30px;
+    line-height:normal;
+}
