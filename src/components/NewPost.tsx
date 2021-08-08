@@ -7,7 +7,7 @@ import ImageInfo from '../types/ImageInfo';
 import './NewPost.css'
 import imageToBase64 from '../util/imageToBase64';
 import { IMAGE_URI } from '../constant/constant';
-
+import ImageBoxPlaceholder from './ImageBoxPlaceholder';
 
 
 const UPLOAD_IMAGE = gql`
@@ -145,11 +145,6 @@ const NewPost = React.memo(() => {
 
 
         //전부 업로드
-        console.log(titleImageLink);
-        console.log(title);
-        console.log(texts);
-        console.log(author);
-        console.log(images);
         if(title && author)
             await addLetter({
                 variables: {
@@ -166,8 +161,8 @@ const NewPost = React.memo(() => {
                 window.location.reload();
             });
         else {
+            console.error("ERROR_NOT_ENOUGH_DATA");
             alert("제목과 이름은 무조건 적어주세요!");
-            console.log("error");
         }
 
 
@@ -224,7 +219,7 @@ const NewPost = React.memo(() => {
 
                 
                 {textMode || textInputMode ? <TextBoxPlaceholder top={followMouseTop} left={followMouseLeft} move={followMouse} set={addText}></TextBoxPlaceholder> : null}
-                {imageMode || imageInputMode ? <ImageBoxPlaceholder top={followMouseTop} left={followMouseLeft} move={followMouse} set={addImage}></ImageBoxPlaceholder> : null}
+                {imageMode || imageInputMode ? <ImageBoxPlaceholder top={followMouseTop} left={followMouseLeft} move={followMouse} set={addImage} imageMode={imageMode}></ImageBoxPlaceholder> : null}
             </div>
             
             <div className="postSubmit" onClick={submit}>글쓰기</div>
@@ -286,70 +281,7 @@ const TextBoxPlaceholder = React.memo(function TextBoxPlaceholder({top, left, mo
     return (
         <div className="textboxPlaceholder" style={followMouseStyle} onMouseMove={e => {e.stopPropagation(); move(e)}}>
             <input type="text" ref={inputRef}></input>
-            <button onClick={()=> set({text:inputRef.current ? inputRef.current.value : '', startX:left, startY:top, font:''})}>저장</button>
-        </div>
-    )
-});
-
-const ImageBoxPlaceholder = React.memo(function ImageBoxPlaceholder({top, left, move, set} : {top: number, left: number, move: (event:React.MouseEvent)=>void, set:(data:ImageInfo)=>void}) {
-    const [mutateFunction] = useMutation(UPLOAD_IMAGE);
-
-    let urlInputRef = useRef<HTMLInputElement>(null);
-
-    let [selectImageMode, setSelectImageMode] = useState(false);
-    let [urlMode, setUrlMode] = useState(true);
-
-
-    let followMouseStyle = {
-        top: `${top}px`,
-        left: `${left}px`
-    }
-
-    async function ImageByDesktopChange(event : React.ChangeEvent<HTMLInputElement>) {
-        let file = event.currentTarget.files ? event.currentTarget.files[0] : null;
-        let imageLink;
-        if(event.currentTarget?.validity.valid && file) 
-            imageLink = (await mutateFunction({variables: { picture: file}}))?.data.UploadImage;
-
-        set({
-            url: imageLink ? `${IMAGE_URI}${imageLink}` : '',
-            startX:left, 
-            startY: top, 
-            width: 100, 
-            height:100
-        });
-
-    }
-
-
-    return (
-        <div className="imageboxPlaceholder" style={followMouseStyle} onMouseMove={e => {e.stopPropagation(); move(e)}}>
-            <div onClick={()=> setSelectImageMode(!selectImageMode)}>Select Image</div>
-            {selectImageMode ? 
-
-                <div className="selectImagePopup" onClick={()=>setSelectImageMode(!selectImageMode)}>
-                    <div className="imageMethodWrap" onClick={(e)=>e.stopPropagation()}>
-                        <div className="imageMethod" onClick={()=>setUrlMode(true)}>URL로 가져오기</div>
-                        <div className="imageMethod" onClick={()=>setUrlMode(false)}>컴퓨터에서 가져오기</div>
-                    </div>
-                    <div onClick={(e)=>e.stopPropagation()}>
-                        {
-                            urlMode ? 
-                                <div className="ByUrl">
-                                    <input placeholder="이미지 주소" ref={urlInputRef}></input>
-                                    <input type="button" value="확인" onClick={()=>{set({url: urlInputRef.current ? urlInputRef.current.value : '', startX:left, startY: top, width: 100, height:100}); }}></input>
-                                </div>
-                                :
-                                <div className="ByDesktop">
-                                    <label htmlFor="getImageFromDesktop"> 컴퓨터에서 가져오기 </label>
-                                    <input type="file" id="getImageFromDesktop" accept=".png, .jpg, .jpeg, .gif" onChange={(e)=>{ImageByDesktopChange(e)}}></input>
-                                </div>
-
-                        }
-                    </div>
-                </div> 
-                
-            : null}
+            <button onClick={()=> set({text:inputRef.current ? inputRef.current.value : '', startX:left, startY:top, font:''})} className="submitText">확인</button>
         </div>
     )
 });
