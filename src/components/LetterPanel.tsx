@@ -1,6 +1,7 @@
 import React from 'react';
 import './LetterPanel.css';
 import LetterInfo from '../types/LetterInfo';
+import { IMAGE_URI } from '../constant/constant';
 
 function LetterPanel(prop : LetterInfo) {
 

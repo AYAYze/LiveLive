@@ -7,6 +7,7 @@ import Letter from './components/Letter';
 import './App.css';
 import LetterInfo from './types/LetterInfo';
 import Post from './components/NewPost';
+import { useEffect } from 'react';
 
 
 
@@ -25,9 +26,16 @@ const LETTERS = gql`
 
 
 function App() {
-
-  const { loading, error, data } = useQuery(LETTERS);
+  const [refreshInterval, setRefreshInterval] = useState(1000);
+  let { loading, error, data, refetch } = useQuery(LETTERS);
   const letters: LetterInfo[] = data?.Letters ?? [];
+
+  useEffect(() => {
+    if (refreshInterval && refreshInterval > 0) {
+      const interval = setInterval(()=> refetch() , refreshInterval);
+      return () => clearInterval(interval);
+    }
+  }, [refreshInterval]);
 
   return (
     <div className="App">

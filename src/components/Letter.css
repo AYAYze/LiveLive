@@ -38,11 +38,20 @@
 }
 
 .title {
+    position: relative;
     height: 400px;
     color:white;
     line-height:400px;
     text-align:center;
     user-select:none;
+}
+
+.titleAuthor {
+    font-size: 20px;
+    position: absolute;
+    right: 10px;
+    bottom: 20px;
+    line-height:0;
 }
 
 .titleBack {

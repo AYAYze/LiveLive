@@ -6,7 +6,7 @@ import LetterInfo from '../types/LetterInfo';
 import { gql, useQuery } from '@apollo/client';
 import WriteInfo from '../types/WriteInfo';
 import ImageInfo from '../types/ImageInfo';
-
+import { IMAGE_URI } from '../constant/constant';
 
 const LETTER = gql`
   query Letter($id: Float!) {
@@ -73,20 +73,23 @@ function Post(){
                     <div className="titleBack">
                         {letter.title}
                     </div>
+                    <div className="titleAuthor">
+                    - {letter.author} -
+                    </div>
                 </div>
                 <div className="write">
                     {
-                        letter.writes.map(value=>{
+                        letter.writes.map((value,index)=>{
                             return (
-                                <Write writeInfo={value}/>
+                                <Write key={index} writeInfo={value}/>
                             )
                         })
 
                     }
                     {
-                        letter.images.map(value=>{
+                        letter.images.map((value,index)=>{
                             return (
-                                <Image imageInfo={value}/>
+                                <Image key={index} imageInfo={value}/>
                             )
                         })
                     }
