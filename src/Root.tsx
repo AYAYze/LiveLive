@@ -1,4 +1,3 @@
-/* Library */
 import {
     ApolloClient,
     InMemoryCache,
@@ -8,10 +7,9 @@ import {
   } from "@apollo/client";
 import { BrowserRouter } from 'react-router-dom';
 import { createUploadLink } from 'apollo-upload-client';
-/* Component */
 import App from './App';
-/* things */
 import { URI } from "./constant";
+
 
 const client = new ApolloClient({
     cache: new InMemoryCache(),
@@ -20,6 +18,7 @@ const client = new ApolloClient({
         uri: URI,
     }),
 })
+
 
 function Root() {
     return (
